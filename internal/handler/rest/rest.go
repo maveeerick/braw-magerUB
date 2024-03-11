@@ -35,21 +35,12 @@ func (r *Rest) MountEndpoint() {
 	routerGroup := r.router.Group("/api/v1")
 
 	routerGroup.GET("/health-check", healthCheck)
-
 	routerGroup.GET("/time-out", testTimeout)
+	
 
 	routerGroup.GET("/login-user", r.middleware.AuthenticateUser, getLoginUser)
-
 	routerGroup.POST("/register", r.Register)
-	routerGroup.POST("/login", r.Login)
-
-	// user := routerGroup.Group("/user")
-	// user.GET("/rent", r.middleware.AuthenticateUser)
-	// user.POST("/profile/upload", r.middleware.AuthenticateUser, r.UploadPhoto)
-
-	
-
-	
+	routerGroup.POST("/login", r.Login)	
 }
 
 func (r *Rest) Serve() {

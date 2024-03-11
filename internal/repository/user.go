@@ -42,15 +42,6 @@ func (u *UserRepository) GetUser(param model.UserParam) (entity.User, error) {
 	return user, nil
 }
 
-// func (u *UserRepository) GetUserWithRent(param model.UserParam) (entity.User, error) {
-// 	user := entity.User{}
-// 	err := u.db.Debug().Where(&param).Preload("Rent").First(&user).Error
-// 	if err != nil {
-// 		return user, err
-// 	}
-
-// 	return user, nil
-// }
 
 func (u *UserRepository) UpdateUser(user entity.User, param model.UserParam) error {
 	err := u.db.Debug().Model(&entity.User{}).Where(param).Updates(&user).Error
