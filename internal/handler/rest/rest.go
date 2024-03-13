@@ -13,6 +13,7 @@ import (
 	"braw-api/pkg/middleware"
 	"braw-api/pkg/response"
 	"github.com/gin-gonic/gin"
+	
 )
 
 type Rest struct {
@@ -29,25 +30,44 @@ func NewRest(service *service.Service, middleware middleware.Interface) *Rest {
 	}
 }
 
-func (r *Rest) MountEndpoint() {
-	r.router.Use(r.middleware.Timeout())
+func (r *Rest) MountEndpoint(router *gin.Engine) {
+	  
+    r.router.Use(func(c *gin.Context) {
+        c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+        c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+        if c.Request.Method == "OPTIONS" {
+            c.AbortWithStatus(http.StatusOK)
+            return
+        }
+        c.Next()
+    })
 
-	routerGroup := r.router.Group("/api/v1")
-
-	routerGroup.GET("/health-check", healthCheck)
-	routerGroup.GET("/time-out", testTimeout)
+    r.router.Use(r.middleware.Timeout())
 	
+    routerGroup := r.router.Group("/api/v1")
+    routerGroup.GET("/health-check", healthCheck)
+    routerGroup.GET("/time-out", testTimeout)
+    routerGroup.GET("/login-user", r.middleware.AuthenticateUser, getLoginUser)
+    routerGroup.POST("/register", r.Register)
+    routerGroup.POST("/login", r.Login)
 
-	routerGroup.GET("/login-user", r.middleware.AuthenticateUser, getLoginUser)
-	routerGroup.POST("/register", r.Register)
-	routerGroup.POST("/login", r.Login)	
+	user := routerGroup.Group("/user")
+	user.POST("/profile/upload", r.middleware.AuthenticateUser, r.UploadPhoto)
+
+	preloved := routerGroup.Group("/preloved")
+	preloved.POST("/", r.CreatePreloved)
+	preloved.GET("/:id", r.GetPrelovedByID)
+	preloved.DELETE("/:id", r.middleware.AuthenticateUser, r.middleware.OnlyAdmin, r.DeletePreloved)
+	preloved.PATCH("/:id", r.UpdatePreloved)
+
 }
 
 func (r *Rest) Serve() {
-	addr := os.Getenv("APP_ADDRESS")
+	//addr := os.Getenv("APP_ADDRESS")
 	port := os.Getenv("APP_PORT")
 
-	err := r.router.Run(fmt.Sprintf("%s:%s", addr, port))
+	err := r.router.Run(fmt.Sprintf(":%s",port))
 	if err != nil {
 		log.Fatalf("Error while serving: %v", err)
 	}

@@ -10,6 +10,9 @@ import (
 	"braw-api/pkg/jwt"
 	"braw-api/pkg/middleware"
 	"braw-api/pkg/supabase"
+	//"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -29,13 +32,21 @@ func main() {
 
 	middleware := middleware.Init(jwtAuth, service)
 
+	router := gin.Default()
+
 	rest := rest.NewRest(service, middleware)
 
 	mysql.Migration(db)
 
 	mysql.SeedData(db)
 
-	rest.MountEndpoint()
+	rest.MountEndpoint(router)
 
 	rest.Serve()
+
+	// err:= godotenv.Load()
+	// env := os.Getenv("ENV")
+	// if err := nil && env == ""{
+	// 	log.error("blablabla")
+	// }
 }

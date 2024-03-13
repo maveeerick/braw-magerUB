@@ -41,11 +41,11 @@ func (u *UserService) Register(param model.UserRegister) error {
 		return err
 	}
 
-	param.ID = uuid.New()
+	param.ID_User = uuid.New()
 	param.Password = hashPassword
 
 	user := entity.User{
-		ID:       param.ID,
+		ID_User:       param.ID_User,
 		Name:     param.Name,
 		Email:    param.Email,
 		Password: param.Password,
@@ -76,7 +76,7 @@ func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, err
 		return result, err
 	}
 
-	token, err := u.jwtAuth.CreateJWTToken(user.ID)
+	token, err := u.jwtAuth.CreateJWTToken(user.ID_User)
 	if err != nil {
 		return result, err
 	}
@@ -112,7 +112,7 @@ func (u *UserService) UploadPhoto(ctx *gin.Context, param model.UserUploadPhoto)
 	err = u.ur.UpdateUser(entity.User{
 		PhotoLink: link,
 	}, model.UserParam{
-		ID: user.ID,
+		ID_User: user.ID_User,
 	})
 	if err != nil {
 		return err
