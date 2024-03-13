@@ -65,7 +65,7 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
 
 func (r *Rest) Serve() {
 	//addr := os.Getenv("APP_ADDRESS")
-	port := os.Getenv("APP_PORT")
+	port := os.Getenv("PORT")
 
 	err := r.router.Run(fmt.Sprintf(":%s",port))
 	if err != nil {
