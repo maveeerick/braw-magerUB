@@ -60,7 +60,7 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
 	preloved.GET("/readpreloved/:id", r.GetPrelovedByID)
 	preloved.DELETE("/delpreloved/:id", r.middleware.AuthenticateUser, r.middleware.OnlyAdmin, r.DeletePreloved)
 	preloved.PATCH("/updatepreloved/:id", r.UpdatePreloved)
-	preloved.GET("/", r.GetAllPreloved)
+	preloved.GET("/getallpreloved", r.GetAllPreloved)
 }
 
 func (r *Rest) Serve() {
