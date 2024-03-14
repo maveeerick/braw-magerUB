@@ -37,14 +37,14 @@ func (br *PrelovedRepository) UpdatePreloved(prelovedReq *model.UpdatePreloved, 
 	tx := br.db.Begin()
 
 	var preloved *entity.Preloved
-	if err := tx.Debug().Where("id = ?", id).First(&preloved).Error; err != nil {
+	if err := tx.Debug().Where("id_preloved = ?", id).First(&preloved).Error; err != nil {
 		tx.Rollback()
 		return nil, err
 	}
 
 	preloved = parseUpdateReq(preloved, prelovedReq)
 
-	if err := tx.Debug().Where("id = ?", id).Save(&preloved).Error; err != nil {
+	if err := tx.Debug().Where("id_preloved = ?", id).Save(&preloved).Error; err != nil {
 		tx.Rollback()
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (br *PrelovedRepository) UpdatePreloved(prelovedReq *model.UpdatePreloved, 
 
 func (br *PrelovedRepository) DeletePreloved(id string) error {
 	log.Println(id)
-	if err := br.db.Debug().Where("id = ?", id).Delete(&entity.Preloved{}).Error; err != nil {
+	if err := br.db.Debug().Where("id_preloved = ?", id).Delete(&entity.Preloved{}).Error; err != nil {
 		return err
 	}
 	return nil
@@ -64,7 +64,7 @@ func (br *PrelovedRepository) DeletePreloved(id string) error {
 
 func (br *PrelovedRepository) GetPrelovedByID(id string) (*entity.Preloved, error) {
 	var preloved entity.Preloved
-	if err := br.db.Debug().Where("id = ?", id).Find(&preloved).Error; err != nil {
+	if err := br.db.Debug().Where("id_preloved = ?", id).First(&preloved).Error; err != nil {
 		return nil, err
 	}
 	return &preloved, nil
