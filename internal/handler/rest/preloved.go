@@ -3,7 +3,7 @@ package rest
 import (
 	"log"
 	"net/http"
-	//"strconv"
+	"strconv"
 
 	"braw-api/model"
 	"braw-api/pkg/response"
@@ -69,18 +69,18 @@ func (r *Rest) UpdatePreloved(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "Success to update preloved", preloved)
 }
 
-// func (r *Rest) GetAllBook(ctx *gin.Context) {
-// 	pageQuery := ctx.Query("page")
-// 	page, err := strconv.Atoi(pageQuery)
-// 	if err != nil {
-// 		response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
-// 	}
+func (r *Rest) GetAllPreloved(ctx *gin.Context) {
+	itemQuery := ctx.Query("item")
+	item, err := strconv.Atoi(itemQuery)
+	if err != nil {
+		response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
+	}
 
-// 	book, err := r.service.BookService.GetAllBook(page)
-// 	if err != nil {
-// 		response.Error(ctx, http.StatusInternalServerError, "Failed to get all book", err)
-// 		return
-// 	}
+	preloved, err := r.service.PrelovedService.GetAllPreloved(item)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "Failed to get all book", err)
+		return
+	}
 
-// 	response.Success(ctx, http.StatusOK, "Success to get all book", book)
-// }
+	response.Success(ctx, http.StatusOK, "Success to get all preloved", preloved)
+}

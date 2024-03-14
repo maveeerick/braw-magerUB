@@ -1,19 +1,22 @@
 package model
 
+import "github.com/google/uuid"
+
 type CreatePreloved struct {
+	ID_Preloved uuid.UUID	`json:"-"`
 	Title       string `json:"title" binding:"required"`
 	Category    string `json:"category" binding:"required"`
-	Price       uint   `json:"price" binding:"required"`
+	Price       int   `json:"price,string" binding:"required"`
 	Condition   string `json:"condition" binding:"required"`
 	Description string `json:"description" binding:"required"`
-	//Stock       uint   `json:"stock" binding:"required"`
+	//Stock       uint   `json:"stock,string" binding:"required"`
 }
 
 type UpdatePreloved struct {
 	Title       string `json:"title"`
 	Category    string `json:"category"`
-	Price       uint   `json:"price"`
+	Price       int   `json:"price,string"`
 	Condition   string `json:"condition"`
 	Description string `json:"description"`
-	//Stock       uint   `json:"stock"`
+	//Stock       uint   `json:"stock,string"`
 }

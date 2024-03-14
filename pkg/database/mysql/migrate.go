@@ -18,6 +18,7 @@ func Migration(db *gorm.DB) {
 
 	if err := db.AutoMigrate(
 		&entity.User{},
+		&entity.Preloved{},
 		//&entity.Book{},
 		//&entity.Rent{},
 		&entity.Role{},

@@ -52,15 +52,15 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
     routerGroup.POST("/register", r.Register)
     routerGroup.POST("/login", r.Login)
 
-	user := routerGroup.Group("/user")
+	user := r.router.Group("/user")
 	user.POST("/profile/upload", r.middleware.AuthenticateUser, r.UploadPhoto)
 
-	preloved := routerGroup.Group("/preloved")
-	preloved.POST("/", r.CreatePreloved)
-	preloved.GET("/:id", r.GetPrelovedByID)
-	preloved.DELETE("/:id", r.middleware.AuthenticateUser, r.middleware.OnlyAdmin, r.DeletePreloved)
-	preloved.PATCH("/:id", r.UpdatePreloved)
-
+	preloved := r.router.Group("/api")
+	preloved.POST("/preloved", r.CreatePreloved)
+	preloved.GET("/readpreloved/:id", r.GetPrelovedByID)
+	preloved.DELETE("/delpreloved/:id", r.middleware.AuthenticateUser, r.middleware.OnlyAdmin, r.DeletePreloved)
+	preloved.PATCH("/updatepreloved/:id", r.UpdatePreloved)
+	preloved.GET("/", r.GetAllPreloved)
 }
 
 func (r *Rest) Serve() {

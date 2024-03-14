@@ -13,7 +13,7 @@ type IPrelovedRepository interface {
 	UpdatePreloved(prelovedReq *model.UpdatePreloved, id string) (*entity.Preloved, error)
 	DeletePreloved(id string) error
 	GetPrelovedByID(id string) (*entity.Preloved, error)
-	//GetAllBook(limit, offset int) ([]*entity.Book, error)
+	GetAllPreloved(limit, offset int) ([]*entity.Preloved, error)
 }
 
 type PrelovedRepository struct {
@@ -70,13 +70,13 @@ func (br *PrelovedRepository) GetPrelovedByID(id string) (*entity.Preloved, erro
 	return &preloved, nil
 }
 
-// func (br *BookRepository) GetAllBook(limit, offset int) ([]*entity.Book, error) {
-// 	var books []*entity.Book
-// 	if err := br.db.Debug().Limit(limit).Offset(offset).Find(&books).Error; err != nil {
-// 		return nil, err
-// 	}
-// 	return books, nil
-// }
+func (br *PrelovedRepository) GetAllPreloved(limit, offset int) ([]*entity.Preloved, error) {
+	var preloveds []*entity.Preloved
+	if err := br.db.Debug().Limit(limit).Offset(offset).Find(&preloveds).Error; err != nil {
+		return nil, err
+	}
+	return preloveds, nil
+}
 
 func parseUpdateReq(preloved *entity.Preloved, prelovedReq *model.UpdatePreloved) *entity.Preloved {
 	if prelovedReq.Title != "" {

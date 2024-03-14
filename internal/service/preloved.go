@@ -12,7 +12,7 @@ type IPrelovedService interface {
 	GetPrelovedByID(id string) (*entity.Preloved, error)
 	DeletePreloved(id string) error
 	UpdatePreloved(prelovedReq *model.UpdatePreloved, id string) (*entity.Preloved, error)
-	//GetAllPreloved(page int) ([]*entity.Preloved, error)
+	GetAllPreloved(item int) ([]*entity.Preloved, error)
 }
 
 type PrelovedService struct {
@@ -69,14 +69,14 @@ func (bs *PrelovedService) UpdatePreloved(prelovedReq *model.UpdatePreloved, id 
 	return preloved, nil
 }
 
-// func (bs *BookService) GetAllBook(page int) ([]*entity.Book, error) {
-// 	limit := 5
-// 	offset := (page - 1) * limit
+func (bs *PrelovedService) GetAllPreloved(item int) ([]*entity.Preloved, error) {
+	limit := 5
+	offset := (item - 1) * limit
 
-// 	books, err := bs.br.GetAllBook(limit, offset)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	preloveds, err := bs.br.GetAllPreloved(limit, offset)
+	if err != nil {
+		return nil, err
+	}
 
-// 	return books, nil
-// }
+	return preloveds, nil
+}
