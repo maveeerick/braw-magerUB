@@ -13,7 +13,8 @@ type IPrelovedRepository interface {
 	UpdatePreloved(prelovedReq *model.UpdatePreloved, id string) (*entity.Preloved, error)
 	DeletePreloved(id string) error
 	GetPrelovedByID(id string) (*entity.Preloved, error)
-	GetAllPreloved(limit, offset int) ([]*entity.Preloved, error)
+	GetAllPreloved() ([]*entity.Preloved, error)
+	//GetPrelovedByUserID(id string) (*entity.Preloved, error)
 }
 
 type PrelovedRepository struct {
@@ -42,7 +43,7 @@ func (br *PrelovedRepository) UpdatePreloved(prelovedReq *model.UpdatePreloved, 
 		return nil, err
 	}
 
-	preloved = parseUpdateReq(preloved, prelovedReq)
+	preloved = parseUpdateReqPreloved(preloved, prelovedReq)
 
 	if err := tx.Debug().Where("id_preloved = ?", id).Save(&preloved).Error; err != nil {
 		tx.Rollback()
@@ -70,15 +71,23 @@ func (br *PrelovedRepository) GetPrelovedByID(id string) (*entity.Preloved, erro
 	return &preloved, nil
 }
 
-func (br *PrelovedRepository) GetAllPreloved(limit, offset int) ([]*entity.Preloved, error) {
+// func (br *PrelovedRepository) GetPrelovedByUserID(id string) (*entity.Preloved, error) {
+// 	var preloved entity.Preloved
+// 	if err := br.db.Debug().Where("id_user = ?", id).First(&preloved).Error; err != nil {
+// 		return nil, err
+// 	}
+// 	return &preloved, nil
+// }
+
+func (br *PrelovedRepository) GetAllPreloved() ([]*entity.Preloved, error) {
 	var preloveds []*entity.Preloved
-	if err := br.db.Debug().Limit(limit).Offset(offset).Find(&preloveds).Error; err != nil {
+	if err := br.db.Debug().Find(&preloveds).Error; err != nil {
 		return nil, err
 	}
 	return preloveds, nil
 }
 
-func parseUpdateReq(preloved *entity.Preloved, prelovedReq *model.UpdatePreloved) *entity.Preloved {
+func parseUpdateReqPreloved(preloved *entity.Preloved, prelovedReq *model.UpdatePreloved) *entity.Preloved {
 	if prelovedReq.Title != "" {
 		preloved.Title = prelovedReq.Title
 	}
@@ -100,3 +109,4 @@ func parseUpdateReq(preloved *entity.Preloved, prelovedReq *model.UpdatePreloved
 
 	return preloved
 }
+

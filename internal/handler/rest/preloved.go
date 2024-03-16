@@ -3,8 +3,6 @@ package rest
 import (
 	"log"
 	"net/http"
-	"strconv"
-
 	"braw-api/model"
 	"braw-api/pkg/response"
 	"github.com/gin-gonic/gin"
@@ -39,6 +37,18 @@ func (r *Rest) GetPrelovedByID(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "Success to get preloved", preloved)
 }
 
+// func (r *Rest) GetPrelovedByUserID(ctx *gin.Context) {
+// 	userID := ctx.Param("id")
+
+// 	user, err := r.service.PrelovedService.GetPrelovedByUserID(userID)
+// 	if err != nil {
+// 		response.Error(ctx, http.StatusNotFound, "Failed to get preloved", err)
+// 		return
+// 	}
+
+// 	response.Success(ctx, http.StatusOK, "Success to get preloved", user)
+// }
+
 func (r *Rest) DeletePreloved(ctx *gin.Context) {
 	prelovedID := ctx.Param("id")
 	log.Println(prelovedID)
@@ -70,15 +80,13 @@ func (r *Rest) UpdatePreloved(ctx *gin.Context) {
 }
 
 func (r *Rest) GetAllPreloved(ctx *gin.Context) {
-	itemQuery := ctx.Query("item")
-	item, err := strconv.Atoi(itemQuery)
-	if err != nil {
-		response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
-	}
+	preloved ,err := r.service.PrelovedService.GetAllPreloved()
 
-	preloved, err := r.service.PrelovedService.GetAllPreloved(item)
+
+
+	
 	if err != nil {
-		response.Error(ctx, http.StatusInternalServerError, "Failed to get all book", err)
+		response.Error(ctx, http.StatusInternalServerError, "Failed to get all preloved", err)
 		return
 	}
 

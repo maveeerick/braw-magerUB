@@ -58,9 +58,24 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
 	preloved := r.router.Group("/api")
 	preloved.POST("/preloved", r.CreatePreloved)
 	preloved.GET("/readpreloved/:id", r.GetPrelovedByID)
-	preloved.DELETE("/delpreloved/:id", r.middleware.AuthenticateUser, r.middleware.OnlyAdmin, r.DeletePreloved)
+	preloved.DELETE("/delpreloved/:id", r.middleware.AuthenticateUser, r.DeletePreloved)
 	preloved.PATCH("/updatepreloved/:id", r.UpdatePreloved)
 	preloved.GET("/getallpreloved", r.GetAllPreloved)
+	//preloved.GET("/readpreloved/:userid", r.GetPrelovedByUserID)
+
+	jastip := r.router.Group("/api")
+	jastip.POST("/jastip", r.CreateJastip)
+	jastip.GET("/readjastip/:id", r.GetJastipByID)
+	jastip.DELETE("/deljastip/:id", r.middleware.AuthenticateUser, r.DeleteJastip)
+	jastip.PATCH("/updatejastip/:id", r.UpdateJastip)
+	jastip.GET("/getalljastip", r.GetAllJastip)
+
+	jasantar := r.router.Group("/api")
+	jasantar.POST("/jasantar", r.CreateJasantar)
+	jasantar.GET("/readjasantar/:id", r.GetJasantarByID)
+	jasantar.DELETE("/deljasantar/:id", r.middleware.AuthenticateUser, r.DeleteJasantar)
+	jasantar.PATCH("/updatejasantar/:id", r.UpdateJasantar)
+	jasantar.GET("/getalljasantar", r.GetAllJasantar)
 }
 
 func (r *Rest) Serve() {
