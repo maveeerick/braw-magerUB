@@ -14,7 +14,7 @@ type IPrelovedRepository interface {
 	DeletePreloved(id string) error
 	GetPrelovedByID(id string) (*entity.Preloved, error)
 	GetAllPreloved() ([]*entity.Preloved, error)
-	//GetPrelovedByUserID(id string) (*entity.Preloved, error)
+	GetPrelovedByUserID(id string) ([]*entity.Preloved, error)
 }
 
 type PrelovedRepository struct {
@@ -71,13 +71,13 @@ func (br *PrelovedRepository) GetPrelovedByID(id string) (*entity.Preloved, erro
 	return &preloved, nil
 }
 
-// func (br *PrelovedRepository) GetPrelovedByUserID(id string) (*entity.Preloved, error) {
-// 	var preloved entity.Preloved
-// 	if err := br.db.Debug().Where("id_user = ?", id).First(&preloved).Error; err != nil {
-// 		return nil, err
-// 	}
-// 	return &preloved, nil
-// }
+func (br *PrelovedRepository) GetPrelovedByUserID(id string) ([]*entity.Preloved, error) {
+	var preloved []*entity.Preloved
+	if err := br.db.Debug().Where("id_user = ?", id).Find(&preloved).Error; err != nil {
+		return nil, err
+	}
+	return preloved, nil
+}
 
 func (br *PrelovedRepository) GetAllPreloved() ([]*entity.Preloved, error) {
 	var preloveds []*entity.Preloved

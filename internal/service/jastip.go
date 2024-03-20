@@ -4,7 +4,7 @@ import (
 	"braw-api/entity"
 	"braw-api/internal/repository"
 	"braw-api/model"
-	"braw-api/pkg/utils"
+	//"braw-api/pkg/utils"
 
 	"github.com/google/uuid"
 )
@@ -12,6 +12,7 @@ import (
 type IJastipService interface {
 	CreateJastip(jastipReq *model.CreateJastip) (*entity.Jastip, error)
 	GetJastipByID(id string) (*entity.Jastip, error)
+	GetJastipByUserID(id string) ([]*entity.Jastip, error)
 	DeleteJastip(id string) error
 	UpdateJastip(jastipReq *model.UpdateJastip, id string) (*entity.Jastip, error)
 	GetAllJastip() ([]*entity.Jastip, error)
@@ -28,15 +29,15 @@ func NewJastipService(br repository.IJastipRepository) IJastipService {
 }
 
 func (bs *JastipService) CreateJastip(jastipReq *model.CreateJastip) (*entity.Jastip, error) {
-	closed, _ := utils.ParseTime(jastipReq.Close_Order)
+	//closed, _ := utils.ParseTime(jastipReq.CloseOrder)
 	jastipParse := &entity.Jastip{
-		ID_Jastip:   uuid.New(),
-		ID_User:     uuid.New(),
-		Title:       jastipReq.Title,
-		Category:    jastipReq.Category,
-		Price:       jastipReq.Price,
-		Open_Day:    jastipReq.Open_Day,
-		Close_Order: closed,
+		IdJastip:   uuid.New(),
+		IdUser:     jastipReq.IdUser,
+		Title:      jastipReq.Title,
+		Category:   jastipReq.Category,
+		Price:      jastipReq.Price,
+		OpenDay:    jastipReq.OpenDay,
+		CloseOrder: jastipReq.CloseOrder,//closed,
 		//Stock:       jastipReq.Stock,
 	}
 
@@ -50,6 +51,14 @@ func (bs *JastipService) CreateJastip(jastipReq *model.CreateJastip) (*entity.Ja
 
 func (bs *JastipService) GetJastipByID(id string) (*entity.Jastip, error) {
 	jastip, err := bs.br.GetJastipByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return jastip, nil
+}
+
+func (bs *JastipService) GetJastipByUserID(id string) ([]*entity.Jastip, error) {
+	jastip, err := bs.br.GetJastipByUserID(id)
 	if err != nil {
 		return nil, err
 	}

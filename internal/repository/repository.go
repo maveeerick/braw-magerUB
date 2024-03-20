@@ -7,6 +7,8 @@ type Repository struct {
 	PrelovedRepository IPrelovedRepository
 	JastipRepository IJastipRepository
 	JasantarRepository IJasantarRepository
+	KomunitasbrawRepository IKomunitasbrawRepository
+	PhotolinkRepository IPhotolinkRepository
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -14,12 +16,15 @@ func NewRepository(db *gorm.DB) *Repository {
 	prelovedRepository := NewPrelovedRepository(db)
 	jastipRepository := NewJastipRepository(db)
 	jasantarRepository := NewJasantarRepository(db)
+	komunitasbrawRepository := NewKomunitasbrawRepository(db)
+	PhotolinkRepository := NewPhotolinkRepository(db)
 
 	return &Repository{
 		UserRepository: userRepository,
 		PrelovedRepository: prelovedRepository,
 		JastipRepository: jastipRepository,
 		JasantarRepository: jasantarRepository,
-	
+		KomunitasbrawRepository: komunitasbrawRepository,
+		PhotolinkRepository: PhotolinkRepository,
 	}
 }

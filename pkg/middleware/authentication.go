@@ -27,7 +27,7 @@ func (m *middleware) AuthenticateUser(ctx *gin.Context) {
 	}
 
 	user, err := m.service.UserService.GetUser(model.UserParam{
-		ID_User: userId,
+		IdUser: userId,
 	})
 	if err != nil {
 		response.Error(ctx, http.StatusUnauthorized, "failed get user", err)

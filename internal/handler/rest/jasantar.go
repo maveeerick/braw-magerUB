@@ -39,6 +39,18 @@ func (r *Rest) GetJasantarByID(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "Success to get jasantar", jasantar)
 }
 
+func (r *Rest) GetJasantarByUserID(ctx *gin.Context) {
+	userID := ctx.Param("id")
+
+	jasantar, err := r.service.JasantarService.GetJasantarByUserID(userID)
+	if err != nil {
+		response.Error(ctx, http.StatusNotFound, "Failed to get jasantar", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to get jasantar", jasantar)
+}
+
 func (r *Rest) DeleteJasantar(ctx *gin.Context) {
 	jasantarID := ctx.Param("id")
 	log.Println(jasantarID)
@@ -70,11 +82,6 @@ func (r *Rest) UpdateJasantar(ctx *gin.Context) {
 }
 
 func (r *Rest) GetAllJasantar(ctx *gin.Context) {
-	// itemQuery := ctx.Query("item")
-	// item, err := strconv.Atoi(itemQuery)
-	// if err != nil {
-	// 	response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
-	// }
 
 	jasantar, err := r.service.JasantarService.GetAllJasantar()
 	if err != nil {

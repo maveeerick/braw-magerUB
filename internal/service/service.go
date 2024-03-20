@@ -12,8 +12,8 @@ type Service struct {
 	PrelovedService IPrelovedService
 	JastipService IJastipService
 	JasantarService IJasantarService
-	//BookService IBookService
-	//RentService IRentService
+	KomunitasbrawService IKomunitasbrawService
+	PhotolinkService IPhotolinkService
 }
 
 type InitParam struct {
@@ -28,15 +28,15 @@ func NewService(param InitParam) *Service {
 	prelovedService := NewPrelovedService(param.Repository.PrelovedRepository)
 	jastipService := NewJastipService(param.Repository.JastipRepository)
 	jasantarService := NewJasantarService(param.Repository.JasantarRepository)
-	//bookService := NewBookService(param.Repository.BookRepository)
-	//rentService := NewRentService(param.Repository.RentRepository, param.Repository.UserRepository, param.Repository.BookRepository)
+	komunitasbrawService := NewKomunitasbrawService(param.Repository.KomunitasbrawRepository)
+	PhotolinkService := NewPhotolinkService(param.Repository.PhotolinkRepository)
 
 	return &Service{
 		UserService: userService,
 		PrelovedService: prelovedService,
 		JastipService: jastipService,
 		JasantarService: jasantarService,
-		//BookService: bookService,
-		//RentService: rentService,
+		KomunitasbrawService: komunitasbrawService,
+		PhotolinkService: PhotolinkService,
 	}
 }

@@ -7,11 +7,11 @@ import (
 )
 
 type UserRegister struct {
-	ID_User       uuid.UUID `json:"-"`
+	IdUser   uuid.UUID `json:"-"`
 	Name     string    `json:"name" binding:"required"`
 	Email    string    `json:"email" binding:"required,email"`
 	Password string    `json:"password" binding:"required,min=8"`
-	Username string	   `json:"username" binding:"required,min=6"`	
+	Username string    `json:"username" binding:"required,min=6"`
 }
 
 type UserLogin struct {
@@ -24,7 +24,7 @@ type UserLoginResponse struct {
 }
 
 type UserParam struct {
-	ID_User      uuid.UUID `json:"-"`
+	IdUser   uuid.UUID `json:"-"`
 	Email    string    `json:"-"`
 	Password string    `json:"-"`
 }

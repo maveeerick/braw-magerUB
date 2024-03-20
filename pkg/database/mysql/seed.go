@@ -39,11 +39,11 @@ func generateRole(db *gorm.DB) error {
 
 	roles = append(roles,
 		&entity.Role{
-			ID:   1,
+			Id:   1,
 			Role: "admin",
 		},
 		&entity.Role{
-			ID:   2,
+			Id:   2,
 			Role: "user",
 		})
 

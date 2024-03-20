@@ -20,6 +20,7 @@ func Migration(db *gorm.DB) {
 		&entity.Preloved{},
 		&entity.Jastip{},
 		&entity.Jasantar{},
+		&entity.Komunitasbraw{},
 		
 	); err != nil {
 		log.Fatalf("failed migration db: %v", err)

@@ -14,6 +14,7 @@ type IJasantarRepository interface {
 	DeleteJasantar(id string) error
 	GetJasantarByID(id string) (*entity.Jasantar, error)
 	GetAllJasantar() ([]*entity.Jasantar, error)
+	GetJasantarByUserID(id string) ([]*entity.Jasantar, error)
 }
 
 type JasantarRepository struct {
@@ -37,14 +38,14 @@ func (br *JasantarRepository) UpdateJasantar(jasantarReq *model.UpdateJasantar, 
 	tx := br.db.Begin()
 
 	var jasantar *entity.Jasantar
-	if err := tx.Debug().Where("id = ?", id).First(&jasantar).Error; err != nil {
+	if err := tx.Debug().Where("id_jasantar = ?", id).First(&jasantar).Error; err != nil {
 		tx.Rollback()
 		return nil, err
 	}
 
-	jasantar = parseUpdateReq(jasantar, jasantarReq)
+	jasantar = parseUpdateReqJasantar(jasantar, jasantarReq)
 
-	if err := tx.Debug().Where("id = ?", id).Save(&jasantar).Error; err != nil {
+	if err := tx.Debug().Where("id_jasantar = ?", id).Save(&jasantar).Error; err != nil {
 		tx.Rollback()
 		return nil, err
 	}
@@ -56,7 +57,7 @@ func (br *JasantarRepository) UpdateJasantar(jasantarReq *model.UpdateJasantar, 
 
 func (br *JasantarRepository) DeleteJasantar(id string) error {
 	log.Println(id)
-	if err := br.db.Debug().Where("id = ?", id).Delete(&entity.Jasantar{}).Error; err != nil {
+	if err := br.db.Debug().Where("id_jasantar = ?", id).Delete(&entity.Jasantar{}).Error; err != nil {
 		return err
 	}
 	return nil
@@ -64,10 +65,18 @@ func (br *JasantarRepository) DeleteJasantar(id string) error {
 
 func (br *JasantarRepository) GetJasantarByID(id string) (*entity.Jasantar, error) {
 	var jasantar entity.Jasantar
-	if err := br.db.Debug().Where("id = ?", id).Find(&jasantar).Error; err != nil {
+	if err := br.db.Debug().Where("id_jasantar = ?", id).Find(&jasantar).Error; err != nil {
 		return nil, err
 	}
 	return &jasantar, nil
+}
+
+func (br *JasantarRepository) GetJasantarByUserID(id string) ([]*entity.Jasantar, error) {
+	var jasantar []*entity.Jasantar
+	if err := br.db.Debug().Where("id_user = ?", id).Find(&jasantar).Error; err != nil {
+		return nil, err
+	}
+	return jasantar, nil
 }
 
 func (br *JasantarRepository) GetAllJasantar() ([]*entity.Jasantar, error) {
@@ -79,7 +88,7 @@ func (br *JasantarRepository) GetAllJasantar() ([]*entity.Jasantar, error) {
 }
 
 
-func parseUpdateReq(jasantar *entity.Jasantar, jasantarReq *model.UpdateJasantar) *entity.Jasantar {
+func parseUpdateReqJasantar(jasantar *entity.Jasantar, jasantarReq *model.UpdateJasantar) *entity.Jasantar {
 	if jasantarReq.Title != "" {
 		jasantar.Title = jasantarReq.Title
 	}

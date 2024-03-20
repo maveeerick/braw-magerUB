@@ -61,7 +61,7 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
 	preloved.DELETE("/delpreloved/:id", r.middleware.AuthenticateUser, r.DeletePreloved)
 	preloved.PATCH("/updatepreloved/:id", r.UpdatePreloved)
 	preloved.GET("/getallpreloved", r.GetAllPreloved)
-	//preloved.GET("/readpreloved/:userid", r.GetPrelovedByUserID)
+	preloved.GET("/readprelovedbyuserid/:id", r.GetPrelovedByUserID)
 
 	jastip := r.router.Group("/api")
 	jastip.POST("/jastip", r.CreateJastip)
@@ -76,6 +76,13 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
 	jasantar.DELETE("/deljasantar/:id", r.middleware.AuthenticateUser, r.DeleteJasantar)
 	jasantar.PATCH("/updatejasantar/:id", r.UpdateJasantar)
 	jasantar.GET("/getalljasantar", r.GetAllJasantar)
+
+	komunitasbraw := r.router.Group("/api")
+	komunitasbraw.POST("/komunitasbraw", r.CreateKomunitasbraw)
+	komunitasbraw.GET("/readkomunitasbraw/:id", r.GetKomunitasbrawByID)
+	komunitasbraw.DELETE("/delkomunitasbraw/:id", r.middleware.AuthenticateUser, r.DeleteKomunitasbraw)
+	komunitasbraw.PATCH("/updatekomunitasbraw/:id", r.UpdateKomunitasbraw)
+	komunitasbraw.GET("/getallkomunitasbraw", r.GetAllKomunitasbraw)
 }
 
 func (r *Rest) Serve() {

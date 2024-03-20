@@ -4,12 +4,14 @@ import (
 	"braw-api/entity"
 	"braw-api/internal/repository"
 	"braw-api/model"
+
 	"github.com/google/uuid"
 )
 
 type IJasantarService interface {
 	CreateJasantar(jasantarReq *model.CreateJasantar) (*entity.Jasantar, error)
 	GetJasantarByID(id string) (*entity.Jasantar, error)
+	GetJasantarByUserID(id string) ([]*entity.Jasantar, error)
 	DeleteJasantar(id string) error
 	UpdateJasantar(jasantarReq *model.UpdateJasantar, id string) (*entity.Jasantar, error)
 	GetAllJasantar() ([]*entity.Jasantar, error)
@@ -27,11 +29,11 @@ func NewJasantarService(br repository.IJasantarRepository) IJasantarService {
 
 func (bs *JasantarService) CreateJasantar(jasantarReq *model.CreateJasantar) (*entity.Jasantar, error) {
 	jasantarParse := &entity.Jasantar{
-		ID_Jasantar:          uuid.New(),
-		ID_User: uuid.New(),
-		Title:       jasantarReq.Title,
-		Area:     jasantarReq.Area,
-		Category:        jasantarReq.Category,
+		IdJasantar: uuid.New(),
+		IdUser:     jasantarReq.IdUser,
+		Title:      jasantarReq.Title,
+		Area:       jasantarReq.Area,
+		Category:   jasantarReq.Category,
 	}
 
 	jasantar, err := bs.br.CreateJasantar(jasantarParse)
@@ -44,6 +46,14 @@ func (bs *JasantarService) CreateJasantar(jasantarReq *model.CreateJasantar) (*e
 
 func (bs *JasantarService) GetJasantarByID(id string) (*entity.Jasantar, error) {
 	jasantar, err := bs.br.GetJasantarByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return jasantar, nil
+}
+
+func (bs *JasantarService) GetJasantarByUserID(id string) ([]*entity.Jasantar, error) {
+	jasantar, err := bs.br.GetJasantarByUserID(id)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +78,6 @@ func (bs *JasantarService) UpdateJasantar(jasantarReq *model.UpdateJasantar, id 
 }
 
 func (bs *JasantarService) GetAllJasantar() ([]*entity.Jasantar, error) {
-	
 
 	jasantars, err := bs.br.GetAllJasantar()
 	if err != nil {

@@ -3,8 +3,6 @@ package mysql
 import (
 	"braw-api/pkg/config"
 	"log"
-
-	//"github.com/Ndraaa15/workshop-bcc/pkg/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

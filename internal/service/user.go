@@ -15,7 +15,6 @@ type IUserService interface {
 	Register(param model.UserRegister) error
 	GetUser(param model.UserParam) (entity.User, error)
 	Login(param model.UserLogin) (model.UserLoginResponse, error)
-	//GetUserRentBook(ctx *gin.Context) (entity.User, error)
 	UploadPhoto(ctx *gin.Context, param model.UserUploadPhoto) error
 }
 
@@ -41,11 +40,11 @@ func (u *UserService) Register(param model.UserRegister) error {
 		return err
 	}
 
-	param.ID_User = uuid.New()
+	param.IdUser = uuid.New()
 	param.Password = hashPassword
 
 	user := entity.User{
-		ID_User:       param.ID_User,
+		IdUser:       param.IdUser,
 		Name:     param.Name,
 		Email:    param.Email,
 		Password: param.Password,
@@ -76,7 +75,7 @@ func (u *UserService) Login(param model.UserLogin) (model.UserLoginResponse, err
 		return result, err
 	}
 
-	token, err := u.jwtAuth.CreateJWTToken(user.ID_User)
+	token, err := u.jwtAuth.CreateJWTToken(user.IdUser)
 	if err != nil {
 		return result, err
 	}
@@ -112,7 +111,7 @@ func (u *UserService) UploadPhoto(ctx *gin.Context, param model.UserUploadPhoto)
 	err = u.ur.UpdateUser(entity.User{
 		PhotoLink: link,
 	}, model.UserParam{
-		ID_User: user.ID_User,
+		IdUser: user.IdUser,
 	})
 	if err != nil {
 		return err

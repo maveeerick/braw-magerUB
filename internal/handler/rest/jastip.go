@@ -39,6 +39,18 @@ func (r *Rest) GetJastipByID(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "Success to get jastip", jastip)
 }
 
+func (r *Rest) GetJastipByUserID(ctx *gin.Context) {
+	userID := ctx.Param("id")
+
+	jastip, err := r.service.JastipService.GetJastipByUserID(userID)
+	if err != nil {
+		response.Error(ctx, http.StatusNotFound, "Failed to get jastip", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to get jastip", jastip)
+}
+
 func (r *Rest) DeleteJastip(ctx *gin.Context) {
 	jastipID := ctx.Param("id")
 	log.Println(jastipID)
