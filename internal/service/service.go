@@ -24,7 +24,7 @@ type InitParam struct {
 }
 
 func NewService(param InitParam) *Service {
-	userService := NewUserService(param.Repository.UserRepository, param.Bcrypt, param.JwtAuth, param.Supabase)
+	userService := NewUserService(param.Repository.UserRepository, param.Repository.UserRepository, param.Bcrypt, param.JwtAuth, param.Supabase)
 	prelovedService := NewPrelovedService(param.Repository.PrelovedRepository)
 	jastipService := NewJastipService(param.Repository.JastipRepository)
 	jasantarService := NewJasantarService(param.Repository.JasantarRepository)

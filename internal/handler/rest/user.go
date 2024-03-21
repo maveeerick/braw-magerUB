@@ -60,3 +60,21 @@ func (r *Rest) UploadPhoto(ctx *gin.Context) {
 
 	response.Success(ctx, http.StatusOK, "success upload photo", nil)
 }
+
+func (r *Rest) UpdateUserData(ctx *gin.Context) {
+	userID := ctx.Param("id")
+
+	var userDataReq model.UpdateUserData
+	if err := ctx.ShouldBindJSON(&userDataReq); err != nil {
+		response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
+		return
+	}
+
+	userData, err := r.service.UserService.UpdateUserData(&userDataReq, userID)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "Failed to update user", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to update user", userData)
+}

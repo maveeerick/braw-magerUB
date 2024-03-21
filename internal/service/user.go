@@ -16,6 +16,7 @@ type IUserService interface {
 	GetUser(param model.UserParam) (entity.User, error)
 	Login(param model.UserLogin) (model.UserLoginResponse, error)
 	UploadPhoto(ctx *gin.Context, param model.UserUploadPhoto) error
+	UpdateUserData(userDataReq *model.UpdateUserData, id string) (*entity.User, error)
 }
 
 type UserService struct {
@@ -23,14 +24,18 @@ type UserService struct {
 	bcrypt   bcrypt.Interface
 	jwtAuth  jwt.Interface
 	supabase supabase.Interface
+	br repository.IUserRepository
 }
 
-func NewUserService(userRepository repository.IUserRepository, bcrypt bcrypt.Interface, jwtAuth jwt.Interface, supabase supabase.Interface) IUserService {
+//type User
+
+func NewUserService(br repository.IUserRepository, userRepository repository.IUserRepository, bcrypt bcrypt.Interface, jwtAuth jwt.Interface, supabase supabase.Interface) IUserService {
 	return &UserService{
 		ur:       userRepository,
 		bcrypt:   bcrypt,
 		jwtAuth:  jwtAuth,
 		supabase: supabase,
+		br: br,
 	}
 }
 
@@ -118,4 +123,13 @@ func (u *UserService) UploadPhoto(ctx *gin.Context, param model.UserUploadPhoto)
 	}
 
 	return nil
+}
+
+func (bs *UserService) UpdateUserData(userDataReq *model.UpdateUserData, id string) (*entity.User, error) {
+	userData, err := bs.br.UpdateUserData(userDataReq, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return userData, nil
 }

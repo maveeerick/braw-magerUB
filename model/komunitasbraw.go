@@ -11,8 +11,8 @@ type CreateKomunitasbraw struct {
 }
 
 type UpdateKomunitasbraw struct {
-	IdKomunitasbraw uuid.UUID `json:"-"`
-	IdUser     uuid.UUID `json:"idUser"`
+	// IdKomunitasbraw uuid.UUID `json:"-"`
+	// IdUser     uuid.UUID `json:"idUser"`
 	Title      string    `json:"title"`
 	Category   string    `json:"category"`
 	Description string    `json:"description" binding:"required"`

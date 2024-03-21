@@ -103,10 +103,6 @@ func parseUpdateReqPreloved(preloved *entity.Preloved, prelovedReq *model.Update
 	if prelovedReq.Description != "" {
 		preloved.Description = prelovedReq.Description
 	}
-	// if prelovedReq.Stock >= 0 {
-	// 	preloved.Stock = prelovedReq.Stock
-	// }
-
 	return preloved
 }
 

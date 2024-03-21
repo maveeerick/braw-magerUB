@@ -8,7 +8,7 @@ import (
 
 type Jastip struct {
 	IdJastip   uuid.UUID `json:"idJastip" gorm:"type:varchar(36);primary_key;"`
-	IdUser     uuid.UUID `json:"idUser" gorm:"type:varchar(36);foreign_key;"`
+	IdUser     uuid.UUID `json:"idUser" gorm:"type:varchar(36);not null;foreign_key;"`
 	Title      string    `json:"title" gorm:"type:varchar(255);not null;"`
 	Category   string    `json:"category" gorm:"type:varchar(255);not null;"`
 	Price      int       `json:"price" gorm:"type:integer;not null;"`

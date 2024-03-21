@@ -11,8 +11,8 @@ type CreateJasantar struct {
 }
 
 type UpdateJasantar struct {
-	IdJasantar uuid.UUID `json:"-"`
-	IdUser     uuid.UUID `json:"idUser"`
+	// IdJasantar uuid.UUID `json:"-"`
+	// IdUser     uuid.UUID `json:"idUser"`
 	Title      string    `json:"title"`
 	Area       string    `json:"area"`
 	Category   string    `json:"category"`

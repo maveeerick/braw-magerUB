@@ -13,7 +13,7 @@ type CreatePhotolink struct {
 }
 
 type UpdatePhotolink struct {
-	IdPhotolink uuid.UUID `json:"-"`
+	//IdPhotolink uuid.UUID `json:"-"`
 	PhotoLink   string    `json:"photoLink" binding:"required"`
 	//IdUser      uuid.UUID `json:"idUser" gorm:"type:varchar(36);"`
 	// IdPreloved uuid.UUID `json:"-"`
