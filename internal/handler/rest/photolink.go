@@ -10,39 +10,39 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (r *Rest) CreatePhotolink(ctx *gin.Context) {
-	var photolinkReq model.CreatePhotolink
+func (r *Rest) CreatePrelovedPhotos(ctx *gin.Context) {
+	var prelovedPhotosReq model.CreatePrelovedPhotos
 
-	if err := ctx.ShouldBindJSON(&photolinkReq); err != nil {
+	if err := ctx.ShouldBindJSON(&prelovedPhotosReq); err != nil {
 		response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
 		return
 	}
 
-	photolink, err := r.service.PhotolinkService.CreatePhotolink(&photolinkReq)
+	prelovedPhotos, err := r.service.PhotolinkService.CreatePrelovedPhotos(&prelovedPhotosReq)
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to create photolink", err)
 		return
 	}
 
-	response.Success(ctx, http.StatusCreated, "Success to create photolink", photolink)
+	response.Success(ctx, http.StatusCreated, "Success to create photolink", prelovedPhotos)
 }
 
-func (r *Rest) GetPhotolinkByID(ctx *gin.Context) {
-	photolinkID := ctx.Param("id")
+func (r *Rest) GetPrelovedPhotosByID(ctx *gin.Context) {
+	prelovedPhotosID := ctx.Param("id")
 
-	photolink, err := r.service.PhotolinkService.GetPhotolinkByID(photolinkID)
+	prelovedPhotos, err := r.service.PhotolinkService.GetPrelovedPhotosByID(prelovedPhotosID)
 	if err != nil {
 		response.Error(ctx, http.StatusNotFound, "Failed to get photolink", err)
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, "Success to get photolink", photolink)
+	response.Success(ctx, http.StatusOK, "Success to get photolink", prelovedPhotos)
 }
 
-func (r *Rest) DeletePhotolink(ctx *gin.Context) {
-	photolinkID := ctx.Param("id")
-	log.Println(photolinkID)
-	err := r.service.PhotolinkService.DeletePhotolink(photolinkID)
+func (r *Rest) DeletePrelovedPhotos(ctx *gin.Context) {
+	prelovedPhotosID := ctx.Param("id")
+	log.Println(prelovedPhotosID)
+	err := r.service.PhotolinkService.DeletePrelovedPhotos(prelovedPhotosID)
 	if err != nil {
 		response.Error(ctx, http.StatusNotFound, "Failed to delete photolink", err)
 		return
@@ -51,30 +51,125 @@ func (r *Rest) DeletePhotolink(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "Success to delete photolink", nil)
 }
 
-func (r *Rest) UpdatePhotolink(ctx *gin.Context) {
-	photolinkID := ctx.Param("id")
+func (r *Rest) CreateJastipPhotos(ctx *gin.Context) {
+	var jastipPhotosReq model.CreateJastipPhotos
 
-	var photolinkReq model.UpdatePhotolink
-	if err := ctx.ShouldBindJSON(&photolinkReq); err != nil {
+	if err := ctx.ShouldBindJSON(&jastipPhotosReq); err != nil {
 		response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
 		return
 	}
 
-	photolink, err := r.service.PhotolinkService.UpdatePhotolink(&photolinkReq, photolinkID)
+	jastipPhotos, err := r.service.PhotolinkService.CreateJastipPhotos(&jastipPhotosReq)
 	if err != nil {
-		response.Error(ctx, http.StatusInternalServerError, "Failed to update photolink", err)
+		response.Error(ctx, http.StatusInternalServerError, "Failed to create photolink", err)
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, "Success to update photolink", photolink)
+	response.Success(ctx, http.StatusCreated, "Success to create photolink", jastipPhotos)
 }
 
-func (r *Rest) GetAllPhotolink(ctx *gin.Context) {
-	photolink, err := r.service.PhotolinkService.GetAllPhotolink()
+func (r *Rest) GetJastipPhotosByID(ctx *gin.Context) {
+	jastipPhotosID := ctx.Param("id")
+
+	jastipPhotos, err := r.service.PhotolinkService.GetJastipPhotosByID(jastipPhotosID)
 	if err != nil {
-		response.Error(ctx, http.StatusInternalServerError, "Failed to get all photolink", err)
+		response.Error(ctx, http.StatusNotFound, "Failed to get photolink", err)
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, "Success to get all photolink", photolink)
+	response.Success(ctx, http.StatusOK, "Success to get photolink", jastipPhotos)
+}
+
+func (r *Rest) DeleteJastipPhotos(ctx *gin.Context) {
+	jastipPhotosID := ctx.Param("id")
+	log.Println(jastipPhotosID)
+	err := r.service.PhotolinkService.DeleteJastipPhotos(jastipPhotosID)
+	if err != nil {
+		response.Error(ctx, http.StatusNotFound, "Failed to delete photolink", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to delete photolink", nil)
+}
+
+func (r *Rest) CreateJasantarPhotos(ctx *gin.Context) {
+	var jasantarPhotosReq model.CreateJasantarPhotos
+
+	if err := ctx.ShouldBindJSON(&jasantarPhotosReq); err != nil {
+		response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
+		return
+	}
+
+	jasantarPhotos, err := r.service.PhotolinkService.CreateJasantarPhotos(&jasantarPhotosReq)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "Failed to create photolink", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusCreated, "Success to create photolink", jasantarPhotos)
+}
+
+func (r *Rest) GetJasantarPhotosByID(ctx *gin.Context) {
+	jasantarPhotosID := ctx.Param("id")
+
+	jasantarPhotos, err := r.service.PhotolinkService.GetJasantarPhotosByID(jasantarPhotosID)
+	if err != nil {
+		response.Error(ctx, http.StatusNotFound, "Failed to get photolink", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to get photolink", jasantarPhotos)
+}
+
+func (r *Rest) DeleteJasantarPhotos(ctx *gin.Context) {
+	jasantarPhotosID := ctx.Param("id")
+	log.Println(jasantarPhotosID)
+	err := r.service.PhotolinkService.DeleteJasantarPhotos(jasantarPhotosID)
+	if err != nil {
+		response.Error(ctx, http.StatusNotFound, "Failed to delete photolink", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to delete photolink", nil)
+}
+
+func (r *Rest) CreateKomunitasbrawPhotos(ctx *gin.Context) {
+	var komunitasbrawPhotosReq model.CreateKomunitasbrawPhotos
+
+	if err := ctx.ShouldBindJSON(&komunitasbrawPhotosReq); err != nil {
+		response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
+		return
+	}
+
+	komunitasbrawPhotos, err := r.service.PhotolinkService.CreateKomunitasbrawPhotos(&komunitasbrawPhotosReq)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "Failed to create photolink", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusCreated, "Success to create photolink", komunitasbrawPhotos)
+}
+
+func (r *Rest) GetKomunitasbrawPhotosByID(ctx *gin.Context) {
+	komunitasbrawPhotosID := ctx.Param("id")
+
+	komunitasbrawPhotos, err := r.service.PhotolinkService.GetKomunitasbrawPhotosByID(komunitasbrawPhotosID)
+	if err != nil {
+		response.Error(ctx, http.StatusNotFound, "Failed to get photolink", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to get photolink", komunitasbrawPhotos)
+}
+
+func (r *Rest) DeleteKomunitasbrawPhotos(ctx *gin.Context) {
+	komunitasbrawPhotosID := ctx.Param("id")
+	log.Println(komunitasbrawPhotosID)
+	err := r.service.PhotolinkService.DeleteKomunitasbrawPhotos(komunitasbrawPhotosID)
+	if err != nil {
+		response.Error(ctx, http.StatusNotFound, "Failed to delete photolink", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to delete photolink", nil)
 }

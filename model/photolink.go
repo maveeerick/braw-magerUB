@@ -2,22 +2,22 @@ package model
 
 import "github.com/google/uuid"
 
-type CreatePhotolink struct {
-	IdPhotolink uuid.UUID `json:"-"`
-	PhotoLink   string    `json:"photoLink" binding:"required"`
-	//IdUser      uuid.UUID `json:"idUser" gorm:"type:varchar(36);"`
-	// IdPreloved uuid.UUID `json:"-"`
-	// IdJastip   uuid.UUID `json:"-"`
-	// IdJasantar uuid.UUID `json:"-"`
-	// IdKomunitasbraw uuid.UUID `json:"-"`
+type CreatePrelovedPhotos struct {
+	IdPrelovedPhoto uuid.UUID `json:"-"`
+	PhotoLink       string    `json:"photoLink" binding:"required"`
 }
 
-type UpdatePhotolink struct {
-	//IdPhotolink uuid.UUID `json:"-"`
-	PhotoLink   string    `json:"photoLink" binding:"required"`
-	//IdUser      uuid.UUID `json:"idUser" gorm:"type:varchar(36);"`
-	// IdPreloved uuid.UUID `json:"-"`
-	// IdJastip   uuid.UUID `json:"-"`
-	// IdJasantar uuid.UUID `json:"-"`
-	// IdKomunitasbraw uuid.UUID `json:"-"`
+type CreateJastipPhotos struct {
+	IdJastipPhoto uuid.UUID `json:"-"`
+	PhotoLink     string    `json:"photoLink" binding:"required"`
+}
+
+type CreateJasantarPhotos struct {
+	IdJasantarPhotolink uuid.UUID `json:"-"`
+	PhotoLink           string    `json:"photoLink" binding:"required"`
+}
+
+type CreateKomunitasbrawPhotos struct {
+	IdKomunitasbrawPhotolink uuid.UUID `json:"-"`
+	PhotoLink                string    `json:"photoLink" binding:"required"`
 }

@@ -8,11 +8,18 @@ import (
 )
 
 type IPhotolinkService interface {
-	CreatePhotolink(photolinkReq *model.CreatePhotolink) (*entity.Photolink, error)
-	GetPhotolinkByID(id string) (*entity.Photolink, error)
-	DeletePhotolink(id string) error
-	UpdatePhotolink(photolinkReq *model.UpdatePhotolink, id string) (*entity.Photolink, error)
-	GetAllPhotolink() ([]*entity.Photolink, error)
+	CreatePrelovedPhotos(prelovedPhotosReq *model.CreatePrelovedPhotos) (*entity.PrelovedPhotos, error)
+	GetPrelovedPhotosByID(id string) (*entity.PrelovedPhotos, error)
+	DeletePrelovedPhotos(id string) error
+	CreateJastipPhotos(jastipPhotosReq *model.CreateJastipPhotos) (*entity.JastipPhotos, error)
+	GetJastipPhotosByID(id string) (*entity.JastipPhotos, error)
+	DeleteJastipPhotos(id string) error
+	CreateJasantarPhotos(jasantarPhotosReq *model.CreateJasantarPhotos) (*entity.JasantarPhotos, error)
+	GetJasantarPhotosByID(id string) (*entity.JasantarPhotos, error)
+	DeleteJasantarPhotos(id string) error
+	CreateKomunitasbrawPhotos(komunitasbrawPhotosReq *model.CreateKomunitasbrawPhotos) (*entity.KomunitasbrawPhotos, error)
+	GetKomunitasbrawPhotosByID(id string) (*entity.KomunitasbrawPhotos, error)
+	DeleteKomunitasbrawPhotos(id string) error
 }
 
 type PhotolinkService struct {
@@ -25,56 +32,122 @@ func NewPhotolinkService(br repository.IPhotolinkRepository) IPhotolinkService {
 	}
 }
 
-func (bs *PhotolinkService) CreatePhotolink(photolinkReq *model.CreatePhotolink) (*entity.Photolink, error) {
-	photolinkParse := &entity.Photolink{
-		IdPhotolink:          uuid.New(),
-		PhotoLink:       photolinkReq.PhotoLink,
-		// IdPreloved:     photolinkReq.IdPreloved,
-		// IdJastip:        photolinkReq.IdJastip,
-		// IdJasantar:       photolinkReq.IdJasantar,
-		// IdKomunitasbraw: photolinkReq.IdKomunitasbraw,
+func (bs *PhotolinkService) CreatePrelovedPhotos(prelovedPhotosReq *model.CreatePrelovedPhotos) (*entity.PrelovedPhotos, error) {
+	prelovedPhotosParse := &entity.PrelovedPhotos{
+		IdPrelovedPhoto:          uuid.New(),
+		PhotoLink:       prelovedPhotosReq.PhotoLink,
 	}
 
-	photolink, err := bs.br.CreatePhotolink(photolinkParse)
+	prelovedphotos, err := bs.br.CreatePrelovedPhotos(prelovedPhotosParse)
 	if err != nil {
 		return nil, err
 	}
 
-	return photolink, nil
+	return prelovedphotos, nil
 }
 
-func (bs *PhotolinkService) GetPhotolinkByID(id string) (*entity.Photolink, error) {
-	photolink, err := bs.br.GetPhotolinkByID(id)
+func (bs *PhotolinkService) GetPrelovedPhotosByID(id string) (*entity.PrelovedPhotos, error) {
+	prelovedPhotos, err := bs.br.GetPrelovedPhotosByID(id)
 	if err != nil {
 		return nil, err
 	}
-	return photolink, nil
+	return prelovedPhotos, nil
 }
 
-func (bs *PhotolinkService) DeletePhotolink(id string) error {
-	err := bs.br.DeletePhotolink(id)
+func (bs *PhotolinkService) DeletePrelovedPhotos(id string) error {
+	err := bs.br.DeletePrelovedPhotos(id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (bs *PhotolinkService) UpdatePhotolink(photolinkReq *model.UpdatePhotolink, id string) (*entity.Photolink, error) {
-	photolink, err := bs.br.UpdatePhotolink(photolinkReq, id)
+func (bs *PhotolinkService) CreateJastipPhotos(jastipPhotosReq *model.CreateJastipPhotos) (*entity.JastipPhotos, error) {
+	jastipPhotosParse := &entity.JastipPhotos{
+		IdJastipPhoto:          uuid.New(),
+		PhotoLink:       jastipPhotosReq.PhotoLink,
+	}
+
+	jastipphotos, err := bs.br.CreateJastipPhotos(jastipPhotosParse)
 	if err != nil {
 		return nil, err
 	}
 
-	return photolink, nil
+	return jastipphotos, nil
 }
 
-func (bs *PhotolinkService) GetAllPhotolink() ([]*entity.Photolink, error) {
-	
+func (bs *PhotolinkService) GetJastipPhotosByID(id string) (*entity.JastipPhotos, error) {
+	jastipPhotos, err := bs.br.GetJastipPhotosByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return jastipPhotos, nil
+}
 
-	photolinks, err := bs.br.GetAllPhotolink()
+func (bs *PhotolinkService) DeleteJastipPhotos(id string) error {
+	err := bs.br.DeleteJastipPhotos(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (bs *PhotolinkService) CreateJasantarPhotos(jasantarPhotosReq *model.CreateJasantarPhotos) (*entity.JasantarPhotos, error) {
+	jasantarPhotosParse := &entity.JasantarPhotos{
+		IdJasantarPhoto:          uuid.New(),
+		PhotoLink:       jasantarPhotosReq.PhotoLink,
+	}
+
+	jasantarphotos, err := bs.br.CreateJasantarPhotos(jasantarPhotosParse)
 	if err != nil {
 		return nil, err
 	}
 
-	return photolinks, nil
+	return jasantarphotos, nil
+}
+
+func (bs *PhotolinkService) GetJasantarPhotosByID(id string) (*entity.JasantarPhotos, error) {
+	jasantarPhotos, err := bs.br.GetJasantarPhotosByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return jasantarPhotos, nil
+}
+
+func (bs *PhotolinkService) DeleteJasantarPhotos(id string) error {
+	err := bs.br.DeleteJasantarPhotos(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (bs *PhotolinkService) CreateKomunitasbrawPhotos(komunitasbrawPhotosReq *model.CreateKomunitasbrawPhotos) (*entity.KomunitasbrawPhotos, error) {
+	komunitasbrawPhotosParse := &entity.KomunitasbrawPhotos{
+		IdKomunitasbrawphoto:          uuid.New(),
+		PhotoLink:       komunitasbrawPhotosReq.PhotoLink,
+	}
+
+	komunitasbrawphotos, err := bs.br.CreateKomunitasbrawPhotos(komunitasbrawPhotosParse)
+	if err != nil {
+		return nil, err
+	}
+
+	return komunitasbrawphotos, nil
+}
+
+func (bs *PhotolinkService) GetKomunitasbrawPhotosByID(id string) (*entity.KomunitasbrawPhotos, error) {
+	komunitasbrawPhotos, err := bs.br.GetKomunitasbrawPhotosByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return komunitasbrawPhotos, nil
+}
+
+func (bs *PhotolinkService) DeleteKomunitasbrawPhotos(id string) error {
+	err := bs.br.DeleteKomunitasbrawPhotos(id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
