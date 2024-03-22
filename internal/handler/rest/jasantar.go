@@ -1,8 +1,10 @@
 package rest
 
 import (
+	"errors"
 	"log"
 	"net/http"
+	"strings"
 
 	//"strconv"
 
@@ -103,8 +105,12 @@ func (r *Rest) UploadJasantarImage(ctx *gin.Context) {
 		return
 	}
 
-	// Parse form data to get uploaded files
 	file, _ := ctx.FormFile("file")
+
+	if !strings.HasPrefix(file.Header.Get("Content-Type"), "image/") {
+		response.Error(ctx, http.StatusBadRequest, "failed to upload file", errors.New("only accept Content-Type image/"))
+		return
+	}
 
 	image, errServ := r.service.JasantarImagesService.CreateJasantarImage(jasantarUUID, file)
 	if errServ != nil {

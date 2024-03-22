@@ -3,8 +3,10 @@ package rest
 import (
 	"braw-api/model"
 	"braw-api/pkg/response"
+	"errors"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -100,8 +102,12 @@ func (r *Rest) UploadPrelovedImage(ctx *gin.Context) {
 		return
 	}
 
-	// Parse form data to get uploaded files
 	file, _ := ctx.FormFile("file")
+
+	if !strings.HasPrefix(file.Header.Get("Content-Type"), "image/") {
+		response.Error(ctx, http.StatusBadRequest, "failed to upload file", errors.New("only accept Content-Type image/"))
+		return
+	}
 
 	image, errServ := r.service.PrelovedImagesService.CreatePrelovedImage(prelovedUUID, file)
 	if errServ != nil {

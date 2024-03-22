@@ -1,8 +1,10 @@
 package rest
 
 import (
+	"errors"
 	"log"
 	"net/http"
+	"strings"
 
 	"braw-api/model"
 	"braw-api/pkg/response"
@@ -101,6 +103,11 @@ func (r *Rest) UploadKomunitasbrawImage(ctx *gin.Context) {
 	}
 
 	file, _ := ctx.FormFile("file")
+
+	if !strings.HasPrefix(file.Header.Get("Content-Type"), "image/") {
+		response.Error(ctx, http.StatusBadRequest, "failed to upload file", errors.New("only accept Content-Type image/"))
+		return
+	}
 
 	image, errServ := r.service.KomunitasbrawImagesService.CreateKomunitasbrawImage(komunitasbrawUUID, file)
 	if errServ != nil {
