@@ -3,11 +3,14 @@ package rest
 import (
 	"log"
 	"net/http"
+
 	//"strconv"
 
 	"braw-api/model"
 	"braw-api/pkg/response"
+
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (r *Rest) CreateJastip(ctx *gin.Context) {
@@ -82,12 +85,6 @@ func (r *Rest) UpdateJastip(ctx *gin.Context) {
 }
 
 func (r *Rest) GetAllJastip(ctx *gin.Context) {
-	//itemQuery := ctx.Query("item")
-	//item, err := strconv.Atoi(itemQuery)
-	// if err != nil {
-	// 	response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
-	// }
-
 	jastip, err := r.service.JastipService.GetAllJastip()
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to get all jastip", err)
@@ -95,4 +92,75 @@ func (r *Rest) GetAllJastip(ctx *gin.Context) {
 	}
 
 	response.Success(ctx, http.StatusOK, "Success to get all jastip", jastip)
+}
+
+func (r *Rest) UploadJastipImage(ctx *gin.Context) {
+	jastipID := ctx.Param("jastipId")
+	jastipUUID, errParse := uuid.Parse(jastipID)
+	if errParse != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid jastip id", errParse)
+		return
+	}
+
+	file, _ := ctx.FormFile("file")
+
+	image, errServ := r.service.JastipImagesService.CreateJastipImage(jastipUUID, file)
+	if errServ != nil {
+		response.Error(ctx, http.StatusBadRequest, "failed to upload image", errServ)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "upload image success", image)
+}
+
+func (r *Rest) GetJastipImagesByJastipId(ctx *gin.Context) {
+	jastipID := ctx.Param("jastipId")
+	if _, err := uuid.Parse(jastipID); err != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid jastip id", err)
+		return
+	}
+
+	images, err := r.service.JastipImagesService.GetImagesByJastipID(jastipID)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "error getting images", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success", images)
+}
+
+func (r *Rest) GetJastipImagesByImageId(ctx *gin.Context) {
+	imageId := ctx.Param("imageId")
+
+	jastipID := ctx.Param("jastipId")
+	if _, err := uuid.Parse(jastipID); err != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid jastip id", err)
+		return
+	}
+
+	image, err := r.service.JastipImagesService.GetImageByID(imageId)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "error getting image", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success", image)
+}
+
+func (r *Rest) DeleteJastipImagesByImageId(ctx *gin.Context) {
+	imageId := ctx.Param("imageId")
+
+	jastipID := ctx.Param("jastipId")
+	if _, err := uuid.Parse(jastipID); err != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid jastip id", err)
+		return
+	}
+
+	err := r.service.JastipImagesService.DeleteJastipImage(imageId)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "error getting image", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to delete jastip image", nil)
 }

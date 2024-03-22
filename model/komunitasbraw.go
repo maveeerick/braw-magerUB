@@ -8,14 +8,12 @@ type CreateKomunitasbraw struct {
 	Title           string    `json:"title" binding:"required"`
 	Category        string    `json:"category" binding:"required"`
 	Description     string    `json:"description" binding:"required"`
-	LinkWebsite     string    `json:"-"`
+	LinkWebsite     string    `json:"linkwebsite" binding:"required"`
 }
 
 type UpdateKomunitasbraw struct {
-	// IdKomunitasbraw uuid.UUID `json:"-"`
-	// IdUser     uuid.UUID `json:"idUser"`
-	LinkWebsite string `json:"-"`
+	LinkWebsite string `json:"linkwebsite"`
 	Title       string `json:"title"`
 	Category    string `json:"category"`
-	Description string `json:"description" binding:"required"`
+	Description string `json:"description"`
 }

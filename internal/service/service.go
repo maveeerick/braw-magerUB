@@ -8,12 +8,15 @@ import (
 )
 
 type Service struct {
-	UserService IUserService
-	PrelovedService IPrelovedService
-	JastipService IJastipService
-	JasantarService IJasantarService
-	KomunitasbrawService IKomunitasbrawService
-	PhotolinkService IPhotolinkService
+	UserService                IUserService
+	PrelovedService            IPrelovedService
+	JastipService              IJastipService
+	JasantarService            IJasantarService
+	KomunitasbrawService       IKomunitasbrawService
+	PrelovedImagesService      IPrelovedImagesService
+	KomunitasbrawImagesService IKomunitasbrawImagesService
+	JastipImagesService        IJastipImagesService
+	JasantarImagesService      IJasantarImagesService
 }
 
 type InitParam struct {
@@ -29,14 +32,20 @@ func NewService(param InitParam) *Service {
 	jastipService := NewJastipService(param.Repository.JastipRepository)
 	jasantarService := NewJasantarService(param.Repository.JasantarRepository)
 	komunitasbrawService := NewKomunitasbrawService(param.Repository.KomunitasbrawRepository)
-	PhotolinkService := NewPhotolinkService(param.Repository.PhotolinkRepository)
+	prelovedImagesService := NewPrelovedImagesService(param.Repository.PrelovedImagesRepository, param.Repository.PrelovedRepository, param.Supabase)
+	jastipImagesService := NewJastipImagesService(param.Repository.JastipImagesRepository, param.Repository.JastipRepository, param.Supabase)
+	komunitasbrawImagesService := NewKomunitasbrawImagesService(param.Repository.KomunitasbrawImagesRepository, param.Repository.KomunitasbrawRepository, param.Supabase)
+	jasantarImagesService := NewJasantarImagesService(param.Repository.JasantarImagesRepository, param.Repository.JasantarRepository, param.Supabase)
 
 	return &Service{
-		UserService: userService,
-		PrelovedService: prelovedService,
-		JastipService: jastipService,
-		JasantarService: jasantarService,
-		KomunitasbrawService: komunitasbrawService,
-		PhotolinkService: PhotolinkService,
+		UserService:                userService,
+		PrelovedService:            prelovedService,
+		JastipService:              jastipService,
+		JasantarService:            jasantarService,
+		KomunitasbrawService:       komunitasbrawService,
+		PrelovedImagesService:      prelovedImagesService,
+		KomunitasbrawImagesService: komunitasbrawImagesService,
+		JastipImagesService:        jastipImagesService,
+		JasantarImagesService:      jasantarImagesService,
 	}
 }

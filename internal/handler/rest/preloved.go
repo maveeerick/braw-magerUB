@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (r *Rest) CreatePreloved(ctx *gin.Context) {
@@ -89,4 +90,76 @@ func (r *Rest) GetAllPreloved(ctx *gin.Context) {
 	}
 
 	response.Success(ctx, http.StatusOK, "Success to get all preloved", preloved)
+}
+
+func (r *Rest) UploadPrelovedImage(ctx *gin.Context) {
+	prelovedID := ctx.Param("prelovedId")
+	prelovedUUID, errParse := uuid.Parse(prelovedID)
+	if errParse != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid preloved id", errParse)
+		return
+	}
+
+	// Parse form data to get uploaded files
+	file, _ := ctx.FormFile("file")
+
+	image, errServ := r.service.PrelovedImagesService.CreatePrelovedImage(prelovedUUID, file)
+	if errServ != nil {
+		response.Error(ctx, http.StatusBadRequest, "failed to upload image", errServ)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "upload image success", image)
+}
+
+func (r *Rest) GetPrelovedImagesByPrelovedId(ctx *gin.Context) {
+	prelovedID := ctx.Param("prelovedId")
+	if _, err := uuid.Parse(prelovedID); err != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid preloved id", err)
+		return
+	}
+
+	images, err := r.service.PrelovedImagesService.GetImagesByPrelovedID(prelovedID)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "error getting images", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success", images)
+}
+
+func (r *Rest) GetPrelovedImagesByImageId(ctx *gin.Context) {
+	imageId := ctx.Param("imageId")
+
+	prelovedID := ctx.Param("prelovedId")
+	if _, err := uuid.Parse(prelovedID); err != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid preloved id", err)
+		return
+	}
+
+	image, err := r.service.PrelovedImagesService.GetImageByID(imageId)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "error getting image", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success", image)
+}
+
+func (r *Rest) DeletePrelovedImagesByImageId(ctx *gin.Context) {
+	imageId := ctx.Param("imageId")
+
+	prelovedID := ctx.Param("prelovedId")
+	if _, err := uuid.Parse(prelovedID); err != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid preloved id", err)
+		return
+	}
+
+	err := r.service.PrelovedImagesService.DeletePrelovedImage(imageId)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "error getting image", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to delete preloved image", nil)
 }

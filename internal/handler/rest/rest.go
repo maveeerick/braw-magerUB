@@ -64,6 +64,10 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
 	preloved.PATCH("/updatepreloved/:id", r.UpdatePreloved)
 	preloved.GET("/getallpreloved", r.GetAllPreloved)
 	preloved.GET("/readprelovedbyuserid/:id", r.GetPrelovedByUserID)
+	preloved.POST("/preloved/:prelovedId/image/upload", r.middleware.AuthenticateUser, r.UploadPrelovedImage)
+	preloved.GET("/preloved/:prelovedId/image",  r.GetPrelovedImagesByPrelovedId)
+	preloved.GET("/preloved/:prelovedId/image/:imageId", r.GetPrelovedImagesByImageId)
+	preloved.DELETE("/preloved/:prelovedId/image/:imageId", r.DeletePrelovedImagesByImageId)
 
 	jastip := r.router.Group("/api")
 	jastip.POST("/jastip", r.CreateJastip)
@@ -72,6 +76,10 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
 	jastip.PATCH("/updatejastip/:id", r.UpdateJastip)
 	jastip.GET("/getalljastip", r.GetAllJastip)
 	jastip.GET("/readjastipbyuserid/:id", r.GetJastipByUserID)
+	jastip.POST("/jastip/:jastipId/image/upload", r.middleware.AuthenticateUser, r.UploadJastipImage)
+	jastip.GET("/jastip/:jastipId/image", r.GetJastipImagesByJastipId)
+	jastip.GET("/jastip/:jastipId/image/:imageId", r.GetJastipImagesByImageId)
+	jastip.DELETE("/jastip/:jastipId/image/:imageId", r.DeleteJastipImagesByImageId)
 
 	jasantar := r.router.Group("/api")
 	jasantar.POST("/jasantar", r.CreateJasantar)
@@ -80,6 +88,10 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
 	jasantar.PATCH("/updatejasantar/:id", r.UpdateJasantar)
 	jasantar.GET("/getalljasantar", r.GetAllJasantar)
 	jasantar.GET("/readjasantarbyuserid/:id", r.GetJasantarByUserID)
+	jasantar.POST("/jasantar/:jasantarId/image/upload", r.middleware.AuthenticateUser, r.UploadJasantarImage)
+	jasantar.GET("/jasantar/:jasantarId/image", r.GetJasantarImagesByJasantarId)
+	jasantar.GET("/jasantar/:jasantarId/image/:imageId", r.GetJasantarImagesByImageId)
+	jasantar.DELETE("/jasantar/:jasantarId/image/:imageId", r.DeleteJasantarImagesByImageId)
 
 	komunitasbraw := r.router.Group("/api")
 	komunitasbraw.POST("/komunitasbraw", r.CreateKomunitasbraw)
@@ -88,6 +100,10 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
 	komunitasbraw.PATCH("/updatekomunitasbraw/:id", r.UpdateKomunitasbraw)
 	komunitasbraw.GET("/getallkomunitasbraw", r.GetAllKomunitasbraw)
 	komunitasbraw.GET("/readkomunitasbrawbyuserid/:id", r.GetKomunitasbrawByUserID)
+	komunitasbraw.POST("/komunitasbraw/:komunitasbrawId/image/upload", r.middleware.AuthenticateUser, r.UploadKomunitasbrawImage)
+	komunitasbraw.GET("/komunitasbraw/:komunitasbrawId/image", r.GetKomunitasbrawImagesByKomunitasbrawId)
+	komunitasbraw.GET("/komunitasbraw/:komunitasbrawId/image/:imageId", r.GetKomunitasbrawImagesByImageId)
+	komunitasbraw.DELETE("/komunitasbraw/:komunitasbrawId/image/:imageId", r.DeleteKomunitasbrawImagesByImageId)
 }
 
 func (r *Rest) Serve() {

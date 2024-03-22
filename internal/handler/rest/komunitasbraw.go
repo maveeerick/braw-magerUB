@@ -8,6 +8,7 @@ import (
 	"braw-api/pkg/response"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (r *Rest) CreateKomunitasbraw(ctx *gin.Context) {
@@ -82,12 +83,6 @@ func (r *Rest) UpdateKomunitasbraw(ctx *gin.Context) {
 }
 
 func (r *Rest) GetAllKomunitasbraw(ctx *gin.Context) {
-	// pageQuery := ctx.Query("page")
-	// page, err := strconv.Atoi(pageQuery)
-	// if err != nil {
-	// 	response.Error(ctx, http.StatusUnprocessableEntity, "Failed to bind request", err)
-	// }
-
 	komunitasbraw, err := r.service.KomunitasbrawService.GetAllKomunitasbraw()
 	if err != nil {
 		response.Error(ctx, http.StatusInternalServerError, "Failed to get all komunitasbraw", err)
@@ -95,4 +90,75 @@ func (r *Rest) GetAllKomunitasbraw(ctx *gin.Context) {
 	}
 
 	response.Success(ctx, http.StatusOK, "Success to get all komunitasbraw", komunitasbraw)
+}
+
+func (r *Rest) UploadKomunitasbrawImage(ctx *gin.Context) {
+	komunitasbrawID := ctx.Param("komunitasbrawId")
+	komunitasbrawUUID, errParse := uuid.Parse(komunitasbrawID)
+	if errParse != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid komunitasbraw id", errParse)
+		return
+	}
+
+	file, _ := ctx.FormFile("file")
+
+	image, errServ := r.service.KomunitasbrawImagesService.CreateKomunitasbrawImage(komunitasbrawUUID, file)
+	if errServ != nil {
+		response.Error(ctx, http.StatusBadRequest, "failed to upload image", errServ)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "upload image success", image)
+}
+
+func (r *Rest) GetKomunitasbrawImagesByKomunitasbrawId(ctx *gin.Context) {
+	komunitasbrawID := ctx.Param("komunitasbrawId")
+	if _, err := uuid.Parse(komunitasbrawID); err != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid komunitasbraw id", err)
+		return
+	}
+
+	images, err := r.service.KomunitasbrawImagesService.GetImagesByKomunitasbrawID(komunitasbrawID)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "error getting images", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success", images)
+}
+
+func (r *Rest) GetKomunitasbrawImagesByImageId(ctx *gin.Context) {
+	imageId := ctx.Param("imageId")
+
+	komunitasbrawID := ctx.Param("komunitasbrawId")
+	if _, err := uuid.Parse(komunitasbrawID); err != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid komunitasbraw id", err)
+		return
+	}
+
+	image, err := r.service.KomunitasbrawImagesService.GetImageByID(imageId)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "error getting image", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success", image)
+}
+
+func (r *Rest) DeleteKomunitasbrawImagesByImageId(ctx *gin.Context) {
+	imageId := ctx.Param("imageId")
+
+	komunitasbrawID := ctx.Param("komunitasbrawId")
+	if _, err := uuid.Parse(komunitasbrawID); err != nil {
+		response.Error(ctx, http.StatusBadRequest, "invalid komunitasbraw id", err)
+		return
+	}
+
+	err := r.service.KomunitasbrawImagesService.DeleteKomunitasbrawImage(imageId)
+	if err != nil {
+		response.Error(ctx, http.StatusInternalServerError, "error getting image", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to delete komunitasbraw image", nil)
 }
