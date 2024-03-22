@@ -39,11 +39,12 @@ type UpdateUserData struct {
 	// Price       int    `json:"price,string"`
 	// Condition   string `json:"condition"`
 	// Description string `json:"description"`
-	Username  string    `json:"username"`
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
-	Contact   string    `json:"contact"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Contact  string `json:"contact"`
 	//Role      int       `json:"role"`
-	PhotoLink string    `json:"-"`
-	Alamat    string    `json:"alamat"`
+	PhotoLink string `json:"-"`
+	Alamat    string `json:"alamat"`
 }

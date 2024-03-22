@@ -17,6 +17,7 @@ type IUserService interface {
 	Login(param model.UserLogin) (model.UserLoginResponse, error)
 	UploadPhoto(ctx *gin.Context, param model.UserUploadPhoto) error
 	UpdateUserData(userDataReq *model.UpdateUserData, id string) (*entity.User, error)
+	GetUserDataByUserID(id string) (*entity.User, error)
 }
 
 type UserService struct {
@@ -131,5 +132,13 @@ func (bs *UserService) UpdateUserData(userDataReq *model.UpdateUserData, id stri
 		return nil, err
 	}
 
+	return userData, nil
+}
+
+func (bs *UserService) GetUserDataByUserID(id string) (*entity.User, error) {
+	userData, err := bs.br.GetUserDataByUserID(id)
+	if err != nil {
+		return nil, err
+	}
 	return userData, nil
 }

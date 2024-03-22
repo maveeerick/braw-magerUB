@@ -78,3 +78,15 @@ func (r *Rest) UpdateUserData(ctx *gin.Context) {
 
 	response.Success(ctx, http.StatusOK, "Success to update user", userData)
 }
+
+func (r *Rest) GetUserDataByUserID(ctx *gin.Context) {
+	userID := ctx.Param("id")
+
+	userData, err := r.service.UserService.GetUserDataByUserID(userID)
+	if err != nil {
+		response.Error(ctx, http.StatusNotFound, "Failed to get user data", err)
+		return
+	}
+
+	response.Success(ctx, http.StatusOK, "Success to get user data", userData)
+}

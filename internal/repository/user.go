@@ -12,6 +12,7 @@ type IUserRepository interface {
 	//GetUserWithRent(param model.UserParam) (entity.User, error)
 	UpdateUser(user entity.User, param model.UserParam) error
 	UpdateUserData(UserReq *model.UpdateUserData, id string) (*entity.User, error)
+	GetUserDataByUserID(id string) (*entity.User, error)
 }
 
 type UserRepository struct {
@@ -94,4 +95,12 @@ func parseUpdateReqUserData(userData *entity.User, userDataReq *model.UpdateUser
 		userData.Alamat = userDataReq.Alamat
 	}
 	return userData
+}
+
+func (br *UserRepository) GetUserDataByUserID(id string) (*entity.User, error) {
+	var userData *entity.User
+	if err := br.db.Debug().Where("id_user = ?", id).Find(&userData).Error; err != nil {
+		return nil, err
+	}
+	return userData, nil
 }

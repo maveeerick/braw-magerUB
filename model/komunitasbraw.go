@@ -4,16 +4,18 @@ import "github.com/google/uuid"
 
 type CreateKomunitasbraw struct {
 	IdKomunitasbraw uuid.UUID `json:"-"`
-	IdUser     uuid.UUID `json:"idUser" binding:"required"`
-	Title      string    `json:"title" binding:"required"`
-	Category   string    `json:"category" binding:"required"`
-	Description string    `json:"description" binding:"required"`
+	IdUser          uuid.UUID `json:"idUser" binding:"required"`
+	Title           string    `json:"title" binding:"required"`
+	Category        string    `json:"category" binding:"required"`
+	Description     string    `json:"description" binding:"required"`
+	LinkWebsite     string    `json:"-"`
 }
 
 type UpdateKomunitasbraw struct {
 	// IdKomunitasbraw uuid.UUID `json:"-"`
 	// IdUser     uuid.UUID `json:"idUser"`
-	Title      string    `json:"title"`
-	Category   string    `json:"category"`
-	Description string    `json:"description" binding:"required"`
+	LinkWebsite string `json:"-"`
+	Title       string `json:"title"`
+	Category    string `json:"category"`
+	Description string `json:"description" binding:"required"`
 }

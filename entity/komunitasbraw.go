@@ -9,4 +9,5 @@ type Komunitasbraw struct {
 	Category        string    `json:"category" gorm:"type:varchar(255);not null;"`
 	Description     string    `json:"description" gorm:"type:varchar(255)"`
 	IdPhotolink     uuid.UUID `json:"idPhotolink" gorm:"type:varchar(36);foreign_key;"`
+	LinkWebsite     string    `json:"linkWebsite" gorm:"type:varchar(255);"`
 }

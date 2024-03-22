@@ -55,6 +55,7 @@ func (r *Rest) MountEndpoint(router *gin.Engine) {
 	user := r.router.Group("/user")
 	user.POST("/profile/upload", r.middleware.AuthenticateUser, r.UploadPhoto)
 	user.PATCH("/updatedata/:id", r.UpdateUserData)
+	user.GET("/readuserdatabyuserid/:id", r.GetUserDataByUserID)
 
 	preloved := r.router.Group("/api")
 	preloved.POST("/preloved", r.CreatePreloved)
